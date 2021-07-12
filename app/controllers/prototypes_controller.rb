@@ -4,6 +4,10 @@ class PrototypesController < ApplicationController
     @prototypes = Prototype.all
   end
 
+  def show
+    @prototype = Prototype.find(params[:id])
+  end
+
   def new
     @prototype = Prototype.new
   end
@@ -14,6 +18,26 @@ class PrototypesController < ApplicationController
       redirect_to  root_path
     else
       render :new
+    end
+  end
+
+  def edit
+    @prototype = Prototype.find(params[:id])
+  end
+
+  def update
+    @prototype = Prototype.find(params[:id])
+    if @prototype.update(prototype_params)
+      redirect_to  prototype_path
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    prototype = Prototype.find(params[:id])
+    if prototype.destroy
+      redirect_to root_path
     end
   end
 
