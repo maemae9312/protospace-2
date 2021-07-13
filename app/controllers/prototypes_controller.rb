@@ -1,4 +1,6 @@
 class PrototypesController < ApplicationController
+  before_action :authenticate_user!,  only: [:new, :create, :destroy]
+
 
   def index
     @prototypes = Prototype.all
@@ -6,6 +8,8 @@ class PrototypesController < ApplicationController
 
   def show
     @prototype = Prototype.find(params[:id])
+    @comment = Comment.new
+    @comments = @prototype.comments.includes(:user)
   end
 
   def new
@@ -22,6 +26,9 @@ class PrototypesController < ApplicationController
   end
 
   def edit
+    unless user_signed_in?
+      redirect_to action: :index
+    end
     @prototype = Prototype.find(params[:id])
   end
 
